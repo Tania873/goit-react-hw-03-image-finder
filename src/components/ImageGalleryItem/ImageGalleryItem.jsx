@@ -9,6 +9,7 @@ const ImageGalleryItem = ({ images }) =>
         src={webformatURL}
         alt={tags}
         data-imageurl={largeImageURL}
+        // onClick={}
       />
     </li>
   ));

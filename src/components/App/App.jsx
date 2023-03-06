@@ -30,9 +30,9 @@ export class App extends Component {
 
     fetchImages(searchQuery, page)
       .then(data => {
+  
         if (!data.hits.length) {
           Notiflix.Notify.failure('No images found!');
-          this.setState({ loadMore: false });
         } else {
           this.setState({ loadMore: true });
         }
@@ -57,16 +57,17 @@ export class App extends Component {
   }
 
   componentDidUpdate(_, prevState) {
-    if (prevState.searchQuery !== this.state.searchQuery) {
-      this.setState({
-        // isLoading: true,
-        page: 1,
-        images: [],
-      });
+    if (prevState.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) {
       this.searchImages();
-    }
-    if (prevState.page !== this.state.page) {
-      this.searchImages();
+      //   this.setState({
+    //     // isLoading: true,
+    //     page: 1,
+    //     images: [],
+    //   });
+    //   this.searchImages();
+    // }
+    // if (prevState.page !== this.state.page) {
+    //   this.searchImages();
     }
   }
 
