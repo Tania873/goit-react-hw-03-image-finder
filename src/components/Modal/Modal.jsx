@@ -13,7 +13,7 @@ class Modal extends Component {
 
   checkEvent = ({ key, target, currentTarget }) => {
     if (key === 'Escape' || target === currentTarget) {
-      this.props.toggleModal({ status: false });
+      this.props.onClose();
     }
   };
 

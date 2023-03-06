@@ -30,7 +30,6 @@ export class App extends Component {
 
     fetchImages(searchQuery, page)
       .then(data => {
-  
         if (!data.hits.length) {
           Notiflix.Notify.failure('No images found!');
         } else {
@@ -57,17 +56,11 @@ export class App extends Component {
   }
 
   componentDidUpdate(_, prevState) {
-    if (prevState.searchQuery !== this.state.searchQuery || prevState.page !== this.state.page) {
+    if (
+      prevState.searchQuery !== this.state.searchQuery ||
+      prevState.page !== this.state.page
+    ) {
       this.searchImages();
-      //   this.setState({
-    //     // isLoading: true,
-    //     page: 1,
-    //     images: [],
-    //   });
-    //   this.searchImages();
-    // }
-    // if (prevState.page !== this.state.page) {
-    //   this.searchImages();
     }
   }
 
@@ -77,22 +70,20 @@ export class App extends Component {
     });
   };
 
-  formSubmitHandler = searchQuery => {
-    this.setState(searchQuery);
+  formSubmitHandler = ({ searchQuery }) => {
+    this.setState({
+      searchQuery: searchQuery,
+      page: 1,
+      images: [],
+    });
   };
 
-  toggleModal = ({ status, src, alt }) => {
-    if (status) {
-      this.setState({
-        targetImage: { src, alt },
-        showModal: true,
-      });
-    } else {
-      this.setState({
-        targetImage: null,
-        showModal: false,
-      });
-    }
+  toggleModal = (src, alt, tag) => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+      targetImage: { src, alt },
+      tags: tag,
+    }));
   };
 
   render() {
@@ -109,15 +100,15 @@ export class App extends Component {
       <div className={css.app}>
         <Searchbar onSubmit={this.formSubmitHandler} />
         {images.length > 0 && (
-          <ImageGallery toggleModal={this.toggleModal}>
-            <ImageGalleryItem images={images} />
+          <ImageGallery>
+            <ImageGalleryItem images={images} onImage={this.toggleModal} />
           </ImageGallery>
         )}
         {showModal && (
           <Modal
             src={targetImage.src}
             alt={targetImage.alt}
-            toggleModal={this.toggleModal}
+            onClose={this.toggleModal}
           />
         )}
         {isLoading && <Loader />}
